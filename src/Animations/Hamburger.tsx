@@ -15,7 +15,7 @@ function Hamburger() {
         }`}
       ></div>
       <div
-        className={`w-15 h-2 ml-5 bg-white rounded-full transition-all duration-700 ease-out ${
+        className={`w-20 h-2 ml-5 bg-white rounded-full transition-all duration-700 ease-out ${
           isOpen ? "opacity-0 scale-75" : ""
         }`}
       ></div>
