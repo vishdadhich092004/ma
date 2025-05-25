@@ -34,6 +34,7 @@ function BottomNavbar() {
         onClick={() => setSelected(1)}
       >
         <IoFastFoodOutline size={25} />
+        <span className="text-xs">Snacks</span>
       </div>
       <div
         className={`relative z-10 flex flex-col items-center justify-center transition-all duration-300 ease-cubic-bezier(0.36, -1.00, 0.32, 2.00) cursor-pointer h-12 w-12 ${
@@ -44,6 +45,7 @@ function BottomNavbar() {
         onClick={() => setSelected(2)}
       >
         <MdOutlineFastfood size={25} />
+        <span className="text-xs">Soups</span>
       </div>
       <div
         className={`relative z-10 flex flex-col items-center justify-center transition-all duration-300 ease-cubic-bezier(0.36, -1.00, 0.32, 2.00) cursor-pointer h-12 w-12 ${
@@ -54,6 +56,7 @@ function BottomNavbar() {
         onClick={() => setSelected(3)}
       >
         <PiBowlFood size={25} />
+        <span className="text-xs">Salads</span>
       </div>
       <div
         className={`relative z-10 flex flex-col items-center justify-center transition-all duration-300 ease-cubic-bezier(0.36, -1.00, 0.32, 2.00) cursor-pointer h-12 w-12 ${
@@ -64,6 +67,7 @@ function BottomNavbar() {
         onClick={() => setSelected(4)}
       >
         <BiDrink size={25} />
+        <span className="text-xs">Drinks</span>
       </div>
     </div>
   );
