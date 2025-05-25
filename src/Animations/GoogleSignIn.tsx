@@ -5,7 +5,7 @@ function GoogleSignIn() {
   const [isHovered, setIsHovered] = useState(false);
   return (
     <div
-      className="flex flex-row items-center gap-10 bg-blue-600 rounded-lg p-1 w-[300px] cursor-pointer font-medium"
+      className="flex flex-row items-center gap-9 bg-blue-600 rounded-lg p-1 w-[300px] cursor-pointer font-medium"
       onClick={() => {
         setIsHovered(!isHovered);
       }}
@@ -23,7 +23,7 @@ function GoogleSignIn() {
         <span
           className={`text-sm whitespace-nowrap transition-all duration-800 ease-in-out transform font-bold ${
             isHovered
-              ? "opacity-0  absolute pointer-events-none"
+              ? "opacity-0 -translate-x-[280px] absolute pointer-events-none"
               : "opacity-100 translate-x-0"
           }`}
         >
