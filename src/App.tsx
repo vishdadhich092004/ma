@@ -1,9 +1,10 @@
-import Hamburger from "./Animations/Hamburger";
-
+// import Hamburger from "./Animations/Hamburger";
+import BottomNavbar from "./Animations/BottomNavbar";
 function App() {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <Hamburger />
+      {/* <Hamburger /> */}
+      <BottomNavbar />
     </div>
   );
 }
