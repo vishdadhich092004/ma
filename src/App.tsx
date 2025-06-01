@@ -1,17 +1,15 @@
-import BottomNavbar from "./Animations/BottomNavbar";
-import CircularImages from "./Animations/CircularImages";
-import GoogleSignIn from "./Animations/GoogleSignIn";
-import Hamburger from "./Animations/Hamburger";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import ShopPage from "./pages/ShopPage";
+
 function App() {
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen gap-30 mt-10">
-      <div className="flex items-center justify-center gap-40 ">
-        <Hamburger />
-        <BottomNavbar />
-        <GoogleSignIn />
-      </div>
-      <CircularImages />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/shop" element={<ShopPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
