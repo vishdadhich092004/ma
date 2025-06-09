@@ -2,6 +2,7 @@ import BottomNavbar from "../Animations/BottomNavbar";
 import CircularImages from "../Animations/CircularImages";
 import GoogleSignIn from "../Animations/GoogleSignIn";
 import Hamburger from "../Animations/Hamburger";
+import ShopPage from "./ShopPage";
 
 function HomePage() {
   return (
@@ -12,6 +13,9 @@ function HomePage() {
         <GoogleSignIn />
       </div>
       <CircularImages />
+      <div className="w-full h-full my-10">
+        <ShopPage />
+      </div>
     </div>
   );
 }
