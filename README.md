@@ -2,6 +2,39 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## Voice-to-Text Feature
+
+This project includes a voice-to-text feature in the feedback system that uses Google's Gemini API for speech transcription.
+
+### Setup Instructions
+
+1. **Get a Gemini API Key**:
+   - Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Create a new API key
+   - Copy the API key
+
+2. **Configure Environment Variables**:
+   - Create a `.env` file in the root directory
+   - Add your API key:
+   ```
+   REACT_APP_GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+
+3. **Features**:
+   - Click the microphone button to start recording
+   - Speak your feedback
+   - Click the microphone again to stop recording
+   - The transcribed text will be added to the feedback textarea
+   - Supports multiple audio formats (WAV, MP3, AIFF, AAC, OGG, FLAC)
+
+### Technical Details
+
+- Uses the Web Audio API for audio recording
+- Integrates with Google Gemini 2.5 Flash model for transcription
+- Supports up to 9.5 hours of audio per request
+- Audio is downsampled to 16 Kbps for processing
+- Includes error handling and fallback mechanisms
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
