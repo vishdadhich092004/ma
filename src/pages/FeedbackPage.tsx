@@ -1,8 +1,12 @@
 import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Send, Mic, MicOff, Loader2 } from 'lucide-react'
+import { Send, Mic, Loader2 } from 'lucide-react'
+import { RiVoiceprintFill } from "react-icons/ri"
 import manfoldinghands from "../media/manfoldinghands.png"
+import { Toaster } from '@/components/ui/sonner'
+import { toast } from 'sonner'
+import { geminiService } from '@/services/geminiService'
 function FeedbackPage() {
   const [feedback, setFeedback] = useState('')
   const [isRecording, setIsRecording] = useState(false)
@@ -11,10 +15,11 @@ function FeedbackPage() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
 
-  const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY as string
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('Feedback submitted:', feedback)
+    toast.success('Feedback submitted successfully')
     setFeedback('')
   }
 
@@ -61,50 +66,8 @@ function FeedbackPage() {
 
   const convertSpeechToText = async (audioBlob: Blob): Promise<void> => {
     try {
-      // Convert audio blob to base64 for API transmission
-      const arrayBuffer = await audioBlob.arrayBuffer()
-      const base64Audio = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)))
-      
-      // Prepare the request to Gemini API
-      const requestBody = {
-        contents: [{
-          parts: [
-            {
-              text: "Generate a transcript of the speech."
-            },
-            {
-              inlineData: {
-                mimeType: "audio/wav",
-                data: base64Audio
-              }
-            }
-          ]
-        }]
-      }
-
-      // Make API call to Gemini
-      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': GEMINI_API_KEY
-        },
-        body: JSON.stringify(requestBody)
-      })
-
-      if (!response.ok) {
-        throw new Error(`API request failed: ${response.status}`)
-      }
-
-      const result = await response.json()
-      
-      if (result.candidates && result.candidates[0] && result.candidates[0].content) {
-        const transcribedText = result.candidates[0].content.parts[0].text
-        setFeedback(prev => prev + (prev ? ' ' : '') + transcribedText)
-      } else {
-        throw new Error('No transcription received from API')
-      }
-      
+      const transcribedText = await geminiService.speechToText(audioBlob)
+      setFeedback(prev => prev + (prev ? ' ' : '') + transcribedText)
     } catch (error) {
       console.error('Speech to text error:', error)
       setRecordingError('Failed to transcribe audio. Please try again or check your API key.')
@@ -137,7 +100,7 @@ function FeedbackPage() {
         </div>
 
         {/* Image and Text Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
           {/* Image Section */}
             <img src={manfoldinghands} alt="Man Folding Hands" className="w-32 h-32 md:w-48 md:h-48 mx-auto lg:w-64 lg:h-64" />   
 
@@ -174,7 +137,7 @@ function FeedbackPage() {
         </div>
 
         {/* Feedback Form */}
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="feedback" className="block text-sm font-medium text-black dark:text-white mb-2">
@@ -189,8 +152,12 @@ function FeedbackPage() {
                   className="min-h-32 resize-none pr-12"
                   required
                 />
-                <div className="absolute bottom-3 right-3 flex items-center space-x-2">
-                  {isProcessing && (
+                <div className={`absolute transition-all duration-300 ease-in-out ${
+                  isRecording 
+                    ? 'bottom-1/2 right-1/2 transform translate-x-1/2 translate-y-1/2' 
+                    : 'bottom-3 right-3'
+                }`}>
+                  {isProcessing && !isRecording && (
                     <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
                       <Loader2 className="w-4 h-4 animate-spin" />
                       <span>Processing...</span>
@@ -200,15 +167,15 @@ function FeedbackPage() {
                     type="button"
                     onClick={toggleRecording}
                     disabled={isProcessing}
-                    className={`p-2 rounded-full transition-all duration-200 ${
+                    className={`rounded-full transition-all duration-300 ease-in-out ${
                       isRecording 
-                        ? 'bg-red-500 hover:bg-red-600 text-white' 
-                        : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
+                        ? 'p-6 bg-blue-500 hover:bg-blue-600 text-white shadow-lg scale-110' 
+                        : 'p-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300'
                     }`}
                     title={isRecording ? 'Stop recording' : 'Start voice recording'}
                   >
                     {isRecording ? (
-                      <MicOff className="w-4 h-4" />
+                      <RiVoiceprintFill className="w-8 h-8 animate-pulse" />
                     ) : (
                       <Mic className="w-4 h-4" />
                     )}
@@ -237,6 +204,7 @@ function FeedbackPage() {
           </form>
         </div>
       </div>
+      <Toaster />
     </div>
   )
 }
