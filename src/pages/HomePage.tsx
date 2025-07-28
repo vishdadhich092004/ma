@@ -3,6 +3,7 @@ import CircularImages from "../Animations/CircularImages";
 import GoogleSignIn from "../Animations/GoogleSignIn";
 import Hamburger from "../Animations/Hamburger";
 import ShopPage from "./ShopPage";
+import ContactUs from "../components/ContactUs";
 
 function HomePage() {
   return (
@@ -16,6 +17,7 @@ function HomePage() {
       <div className="w-full h-full my-10">
         <ShopPage />
       </div>
+      <ContactUs />
     </div>
   );
 }
